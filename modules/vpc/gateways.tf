@@ -16,9 +16,9 @@ tags = {
 
 #NAT Gateway for Private Subnets
 resource "aws_nat_gateway" "nat_gateway" {
-  count = length(az_list)
-  allocation_id = aws_eip.eip.id
-  subnet_id     = aws_subnet.app_public_subnet.id
+  count = length(var.az_list)
+  allocation_id = aws_eip.eip[count.index].id
+  subnet_id     = aws_subnet.app_public_subnet[count.index].id
 
   tags = {
     Name = "${var.env}-${var.app_name}-NAT GW"
