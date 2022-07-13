@@ -15,7 +15,7 @@ variable "region" {
 
 variable "az_list" {
     description = "AWS Availablity Zones for the application"
-    type = string
+    type = list(string)
 }
 
 variable "vpc_cidr_block" {
@@ -23,12 +23,12 @@ variable "vpc_cidr_block" {
     type = string
 }
 
-variable "private_cidr_block" {
+variable "private_cidr_blocks" {
     description = "Private CIDR Block"
-    type = string
+    type = list(string)
 }
 
-variable "public_cidr_block" {
+variable "public_cidr_blocks" {
     description = "Public CIDR Block"
-    type = string
+    type = list(string)
 }

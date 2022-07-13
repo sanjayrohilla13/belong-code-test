@@ -10,22 +10,24 @@ resource "aws_vpc" "app_vpc" {
 # Creation of Subnets for the application
 # Private Subnets 
 resource "aws_subnet" "app_private_subnet" {
+  count = length(var.private_cidr_blocks)
   vpc_id     = aws_vpc.app_vpc.id
-  cidr_block = var.private_cidr_block
-  availability_zone = "ap-southeast-2a"
+  cidr_block = var.private_cidr_blocks[count.index]
+  availability_zone = var.az_list[count.index] 
 
   tags = {
-    Name = "${var.env}-${var.app_name}-Private Subnet"
+    Name = "${var.env}-${var.app_name}-Private Subnet-${count.index + 1}"
   }
 }
 
 #Public Subnets
 resource "aws_subnet" "app_public_subnet" {
+  count = length(var.public_cidr_blocks)
   vpc_id     = aws_vpc.app_vpc.id
-  cidr_block = var.public_cidr_block
-  availability_zone = var.az_list
+  cidr_block = var.public_cidr_blocks[count.index]
+  availability_zone = var.az_list[count.index]
 
   tags = {
-    Name = "${var.env}-${var.app_name}-Public Subnet"
+    Name = "${var.env}-${var.app_name}-Public Subnet-${count.index + 1}"
   }
 }
