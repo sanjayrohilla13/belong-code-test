@@ -18,10 +18,12 @@ resource "aws_launch_configuration" "app_launch_conf" {
 resource "aws_autoscaling_group" "app_launch_conf" {
   name                 = "${var.env}-${var.app_name}-ASG"
   launch_configuration = aws_launch_configuration.app_launch_conf.name
-  vpc_zone_identifier = ["${var.private_subnet_id}"]
+  #vpc_zone_identifier = ["${var.private_subnet_id}"]
+  vpc_zone_identifier = [for subnet in var.private_subnet_ids : subnet]
   min_size             = var.min_size
   max_size             = var.max_size
   desired_capacity     = var.desired_capacity
+  target_group_arns = [aws_lb_target_group.app_target_group.arn]
   
   tag {
     key = "Name"

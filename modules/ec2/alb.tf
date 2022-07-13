@@ -1,20 +1,41 @@
-# resource "aws_lb" "app_alb" {
-#   name               = "${var.env}-application-ALB"
-#   internal           = false
-#   load_balancer_type = "application"
-#   #security_groups    = [aws_security_group.lb_sg.id]
-#   #subnets            = [for subnet in aws_subnet.public : subnet.id]
-#   subnets            = [var.public_subnet_id]
+resource "aws_lb" "app_alb" {
+  name               = "${var.env}-application-ALB"
+  internal           = false
+  load_balancer_type = "application"
+  #security_groups    = [aws_security_group.lb_sg.id]
+  subnets            = [for subnet in var.public_subnet_ids : subnet]
+  security_groups = [aws_security_group.public_security_group.id]
+  enable_deletion_protection = false
+  tags = {
+    Environment = "${var.env}-${var.app_name}-LB"
+  }
+}
 
-#   enable_deletion_protection = true
+resource "aws_lb_listener" "alb_listener" {
+  load_balancer_arn = aws_lb.app_alb.arn
+  port              = "80"
+  protocol          = "HTTP"
+  
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app_target_group.arn
+  }
+}
 
-# #   access_logs {
-# #     bucket  = aws_s3_bucket.lb_logs.bucket
-# #     prefix  = "test-lb"
-# #     enabled = true
-# #   }
-
-#   tags = {
-#     Environment = "${var.env}-${var.app_name}-LB"
-#   }
-# }
+resource "aws_lb_target_group" "app_target_group" {
+  name     = "${var.env}-${var.app_name}-tg"
+  port     = 80
+  protocol = "HTTP"
+  target_type = "instance"
+  vpc_id   = var.app_vpc_id
+  health_check {
+    enabled = true
+    protocol = "HTTP"
+    path = "/"
+    interval = 10
+    timeout = 5
+    healthy_threshold = 2
+    unhealthy_threshold = 2
+    matcher = "200"
+  }
+}

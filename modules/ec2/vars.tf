@@ -28,14 +28,14 @@ variable "desired_capacity" {
   type = string
 }
 
-variable "private_subnet_id" {
-    description = "Private Subnet Id"
-    type = string
+variable "private_subnet_ids" {
+    description = "Private Subnet Ids"
+    type = list(string)
 }
 
-variable "public_subnet_id" {
-    description = "Public Subnet Id"
-    type = string
+variable "public_subnet_ids" {
+    description = "Public Subnet Ids"
+    type = list(string)
 }
 
 variable "app_vpc_id" {
@@ -43,9 +43,9 @@ variable "app_vpc_id" {
     type = string
 }
 
-variable "private_cidr_block" {
+variable "private_cidr_blocks" {
     description = "Private CIDR Block"
-  type = string
+  type = list(string)
 }
 
 variable "key_name" {
@@ -56,4 +56,9 @@ variable "key_name" {
 variable "time_zone" {
     description = "Time Zone of the application"
     type = string
+}
+
+variable "az_list" {
+    description = "Availablity Zone List"
+    type = list(string)
 }
