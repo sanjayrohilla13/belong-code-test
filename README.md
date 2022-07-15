@@ -27,12 +27,10 @@ For above code challenge, I hereby purpose the below solution:
 2. The application will be deployed in two AZs of the above defined region for high availablity. AZ's are also configurable from the parameter file terraform.tfvars. The AZs should belong to the same region. 
 
 3. The EC2 instances hosting http server will be running in the private AZs for increased security and will be accessable from within the VPC network only. 
-4. The EC2 instances will be provisioned by Auto Scaling Group with scale up and scale down policies with CloudWatch Service. 
+4. The EC2 instances will be provisioned by Auto Scaling Group with scale out and scale in policies with CloudWatch Service. 
 5. All of the parameters for Auto Scaling configurations like max size, min size and desired capacity, cool down time, High Threshold, low threshold are configurable and can be defined in the variable parameter file depending upon the requirements of the application.
 
-4. The ASG will send the scale up notification to SNS (Simple Notification Service) for any change in the instance configuration. Any required email id's can be added to the simple notifcation service.
+4. The terminal access to the EC2 (hosting httpd service) will be through jump server provisioned using Jump-server ASG. The ASG will be capable of provisioning the Jump server in both the AZs to keep the jump server highly available in case of one AZ is down.
 
-5. The terminal access to the EC2 (hosting httpd service) will be through jump server provisioned using Jump-server ASG. The ASG will be capable of provisioning the Jump server in both the AZs to keep the jump server highly available in case of one AZ is down.
-
-6. The S3 bucket will be accessed using VPC Gateway endpoint to cut the cost for accessing the bucket from public internet. 
+5. The S3 bucket will be accessed using VPC Gateway endpoint to cut the cost for accessing the bucket from public internet. 
 
