@@ -62,3 +62,8 @@ variable "az_list" {
     description = "Availablity Zone List"
     type = list(string)
 }
+
+variable "app_instance_profile" {
+    description = "IAM instance Profile"
+    type = string
+}

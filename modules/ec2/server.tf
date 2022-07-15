@@ -5,6 +5,7 @@ resource "aws_launch_configuration" "app_launch_conf" {
   instance_type = var.instance_type
   security_groups = [ aws_security_group.private_security_group.id ]
   key_name = var.key_name
+  iam_instance_profile = var.app_instance_profile
   #user_data = "${path.module}/scripts/user-data.sh"
   user_data = templatefile("${path.module}/user-script/user-data.sh", { timezone = var.time_zone })
 
