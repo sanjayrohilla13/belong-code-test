@@ -4,4 +4,4 @@ yum install httpd -y
 systemctl start httpd
 systemctl enable httpd
 timedatectl set-timezone Australia/Sydney
-echo "Greetings, Welcome to test-code Challenge Application - $(hostname -f). The instance up time is $(date)" > /var/www/html/index.html
+s3:/belong-coding-challenge/belong-test.html > /var/www/html/index.html

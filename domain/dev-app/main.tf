@@ -32,4 +32,7 @@ module "ec2" {
   time_zone            = var.time_zone
   az_list              = var.az_list
   app_instance_profile = module.iam.app_instance_profile
+  cooldown_period      = var.cooldown_period
+  scale_out_adjustment = var.scale_out_adjustment
+  scale_in_adjustment  = var.scale_in_adjustment
 }

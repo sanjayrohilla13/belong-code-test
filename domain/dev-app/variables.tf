@@ -65,3 +65,18 @@ variable "time_zone" {
   description = "Time Zone of the application"
   type        = string
 }
+
+variable "cooldown_period" {
+  description = "cool down time for Application ASG"
+  type        = string
+}
+
+variable "scale_out_adjustment" {
+  description = "No of Instances to be added while Scale out event"
+  type        = number
+}
+
+variable "scale_in_adjustment" {
+  description = "No of Instances to be removed while Scale in event"
+  type        = number
+}

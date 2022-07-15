@@ -1,8 +1,8 @@
-resource "aws_autoscaling_policy" "high_cpu_policy" {
-  name                   = "${var.env}-${var.app_name}-high-cpu-policy"
-  scaling_adjustment     = 1
+resource "aws_autoscaling_policy" "scale_out_policy" {
+  name                   = "${var.env}-${var.app_name}-scale_out_policy"
+  scaling_adjustment     = var.scale_out_adjustment
   adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
+  cooldown               = var.cooldown_period
   autoscaling_group_name = aws_autoscaling_group.app_auto_scaling_grp.name
 }
 
@@ -21,21 +21,21 @@ resource "aws_cloudwatch_metric_alarm" "cw_high_cpu_metric_alarm" {
     AutoScalingGroupName = aws_autoscaling_group.app_auto_scaling_grp.name
   }
 
-  alarm_actions     = [aws_autoscaling_policy.high_cpu_policy.arn]
+  alarm_actions     = [aws_autoscaling_policy.scale_out_policy.arn]
   # SNS policy to be added later
   insufficient_data_actions = []
 }
 
-resource "aws_autoscaling_policy" "low_cpu_policy" {
-  name                   = "${var.env}-${var.app_name}-low-cpu-policy"
-  scaling_adjustment     = -1
+resource "aws_autoscaling_policy" "scale_in_policy" {
+  name                   = "${var.env}-${var.app_name}-scale_in_policy"
+  scaling_adjustment     = var.scale_in_adjustment
   adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
+  cooldown               = var.cooldown_period
   autoscaling_group_name = aws_autoscaling_group.app_auto_scaling_grp.name
 }
 
 resource "aws_cloudwatch_metric_alarm" "cw_low_cpu_metric_alarm" {
-  alarm_name                = "${var.env}-${var.app_name}-metric_alarm"
+  alarm_name                = "${var.env}-${var.app_name}-low_cpu_metric_alarm"
   comparison_operator       = "LessThanOrEqualToThreshold"
   evaluation_periods        = "2"
   metric_name               = "CPUUtilization"
@@ -49,7 +49,7 @@ resource "aws_cloudwatch_metric_alarm" "cw_low_cpu_metric_alarm" {
     AutoScalingGroupName = aws_autoscaling_group.app_auto_scaling_grp.name
   }
 
-  alarm_actions     = [aws_autoscaling_policy.low_cpu_policy.arn]
+  alarm_actions     = [aws_autoscaling_policy.scale_in_policy.arn]
   # SNS policy to be added later
   insufficient_data_actions = []
 }
