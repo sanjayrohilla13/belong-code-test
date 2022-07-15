@@ -16,7 +16,7 @@ resource "aws_autoscaling_group" "jump_server_asg" {
   vpc_zone_identifier = [for subnet in var.public_subnet_ids : subnet]
   min_size             = 0
   max_size             = 2
-  desired_capacity     = 2
+  desired_capacity     = 1
    
   tag {
     key = "Name"
