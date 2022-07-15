@@ -16,7 +16,7 @@ resource "aws_launch_configuration" "app_launch_conf" {
 }
 
 #Create Auto Scaling Group
-resource "aws_autoscaling_group" "app_launch_conf" {
+resource "aws_autoscaling_group" "app_auto_scaling_grp" {
   name                 = "${var.env}-${var.app_name}-ASG"
   launch_configuration = aws_launch_configuration.app_launch_conf.name
   #vpc_zone_identifier = ["${var.private_subnet_id}"]
