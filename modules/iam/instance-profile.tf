@@ -1,12 +1,12 @@
 #Create IAM instance Profile for attaching with the Web Server
 resource "aws_iam_instance_profile" "app_instance_profile" {
-  name = "${var.env}-${var.app_name}-instance_profile"
+  name = "${var.app_name}-${var.env}-instance_profile"
   role = aws_iam_role.app_role.name
 }
 
 # IAM role for the application
 resource "aws_iam_role" "app_role" {
-  name               = "${var.env}-${var.app_name}-instance_role"
+  name               = "${var.app_name}-${var.env}-instance_role"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role_policy.json
 }
@@ -34,8 +34,8 @@ resource "aws_iam_role_policy_attachment" "server_s3_policy_attach" {
 
 # S3 Server Policy for accessing S3 service
 resource "aws_iam_policy" "s3_server_policy" {
-  name        = "${var.env}-${var.app_name}-s3_server_access_policy"
-  policy      = data.aws_iam_policy_document.s3_access_policy_doc.json
+  name   = "${var.app_name}-${var.env}-S3_server_access_policy"
+  policy = data.aws_iam_policy_document.s3_access_policy_doc.json
 }
 
 #S3 Policy Document 
@@ -53,29 +53,3 @@ data "aws_iam_policy_document" "s3_access_policy_doc" {
     ]
   }
 }
-
-
-# # S3 Policy Document 
-# data "aws_iam_policy_document" "s3_access_policy_doc" {
-#   statement {
-#     effect = "Allow"
-#     actions = [
-#       "s3:ListBucket"
-#     ]
-#     resources = [
-#       #aws_s3_bucket.example.arn
-#       "*"
-#     ]
-#   }
-#   statement {
-#     effect = "Allow"
-#     actions = [
-#       "s3:GetObject",
-#       "s3:PutObject"
-#     ]
-#     resources = [
-#       #"${aws_s3_bucket.example.arn}/*"
-#       "*"      
-#     ]
-#   }
-# }

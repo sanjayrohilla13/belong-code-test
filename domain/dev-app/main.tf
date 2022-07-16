@@ -35,4 +35,6 @@ module "ec2" {
   cooldown_period      = var.cooldown_period
   scale_out_adjustment = var.scale_out_adjustment
   scale_in_adjustment  = var.scale_in_adjustment
+  cw_high_threshold    = var.cw_high_threshold
+  cw_low_threshold     = var.cw_low_threshold
 }

@@ -11,5 +11,5 @@ data "aws_ami" "instance_ami" {
     values = ["hvm"]
   }
 
-  owners = ["amazon"] 
+  owners = ["amazon"]
 }

@@ -80,3 +80,13 @@ variable "scale_in_adjustment" {
   description = "No of Instances to be removed while Scale in event"
   type        = number
 }
+
+variable "cw_high_threshold" {
+  description = "Cloud Watch High Threshold for Scale Out"
+  type        = string
+}
+
+variable "cw_low_threshold" {
+  description = "Cloud Watch Low Threshold for Scale In"
+  type        = string
+}
