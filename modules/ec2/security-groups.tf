@@ -1,7 +1,7 @@
 #Private Security Group
 resource "aws_security_group" "private_security_group" {
   name        = "${var.app_name}-${var.env}-Private_SG"
-  description = "Allow Traffic from Internal Network only"
+  description = "Private Security Group"
   vpc_id      = var.app_vpc_id
 
   ingress {
@@ -12,11 +12,11 @@ resource "aws_security_group" "private_security_group" {
     security_groups = [aws_security_group.public_security_group.id]
   }
   ingress {
-    description     = "Allow HTTP from Inside Network"
+    description     = "Allow HTTP from Load Balancer Only"
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [aws_security_group.public_security_group.id]
+    security_groups = [aws_security_group.alb_security_group.id]
   }
   egress {
     from_port        = 0
@@ -34,7 +34,7 @@ resource "aws_security_group" "private_security_group" {
 #Public Security Group
 resource "aws_security_group" "public_security_group" {
   name        = "${var.app_name}-${var.env}-Public_SG"
-  description = "Allow Traffic from Internet"
+  description = "Allow SSH Traffic from Internet"
   vpc_id      = var.app_vpc_id
 
   ingress {
@@ -44,6 +44,26 @@ resource "aws_security_group" "public_security_group" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "${var.app_name}-${var.env}-Public_SG"
+  }
+}
+
+#ALB Security Group
+resource "aws_security_group" "alb_security_group" {
+  name        = "${var.app_name}-${var.env}-ALB_SG"
+  description = "Allow HTTP Traffic from Internet"
+  vpc_id      = var.app_vpc_id
 
   ingress {
     description = "Allow HTTP Port"
@@ -62,6 +82,6 @@ resource "aws_security_group" "public_security_group" {
   }
 
   tags = {
-    Name = "${var.app_name}-${var.env}-Public_SG"
+    Name = "${var.app_name}-${var.env}-ALB_SG"
   }
 }

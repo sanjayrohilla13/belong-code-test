@@ -44,37 +44,40 @@ For above code challenge, I hereby purpose the below solution:
 Application Deployment Steps
 ------------------------------------------------------------------------------------------------------------
 Application can be be deployed in dev enviornment using an automation tool in steps:
-1. Create a Job for deploying backend architecture (backend bucket and a dynamodb statelock table) with below commands:
-    cd domain/dev-backend-setup/
-    terraform init
-    terraform plan
-    terraform apply -auto-approve 
+1. Create a Job for deploying backend architecture (backend bucket and a dynamodb statelock table) with below commands (This job should be executed only while provisioning the new enviornment):
+      cd domain/dev-backend-setup/
+      terraform init
+      terraform plan
+      terraform apply -auto-approve 
 
-    same job can be configured to destroy the infrastructure based on parameter.
-    cd domain/dev-backend-setup/
-    terraform init
-    terraform plan - destroy
-    terraform destroy -auto-approve 
+    same job can be configured to destroy the infrastructure based on parameter if required. However it is not recommended to destroy the infrastructre if the bucket is being used by some other infra configuration.
+      cd domain/dev-backend-setup/
+      terraform init
+      terraform plan - destroy
+      terraform destroy -auto-approve 
     
-2. Create a job for deploying the application in AWS Environment
-    cd domain/dev-codetest/
-    terraform init
-    terraform plan
-    terraform apply -auto-approve
+2. Create a job for deploying the application in AWS Environment using below commands
+      cd domain/dev-codetest/
+      terraform init
+      terraform plan
+      terraform apply -auto-approve
 
     same job can be configured to destroy the backend infrastructure based on parameter.  
-    cd domain/dev-codetest/
-    terraform init
-    terraform plan -destroy
-    terraform destroy -auto-approve
-
-Please use the below steps to deploy the application in new environment
-1. Duplicate the "dev-backend-setup" folder for the new environment e.g. staging-backend-setup
+      cd domain/dev-codetest/
+      terraform init
+      terraform plan -destroy
+      terraform destroy -auto-approve
+------------------------------------------------------------------------------------------------------------
+Deploying the application in a New Environment
+------------------------------------------------------------------------------------------------------------
+Please use the below steps to deploy the application in a new environment
+1. Duplicate the "domain/dev-backend-setup" folder into the new environment folder e.g. 
+   staging-backend-setup
 2. Change the terraform.tfvars parameters for aws account number (if application is deployed in diff aws 
    account), env name and application name.
-3. Create job in the Job Orchestration Tool like jenkins and run the job foor provisioning the backend.
+3. Create job in the Job Orchestration Tool like jenkins and run the job for provisioning the backend.
 
-4. Duplicate the "dev-codetest" folder for the new environment e.g. staging-codetest
+4. Duplicate the "domain/dev-codetest" folder into the new environment folder e.g. staging-codetest
 5. change the providers.tf file for backend parameters created in step 3. e.g. backend bucket name and   
    state-lock-table name.
 6. change the terraform.tfvars for the changed parameters for the new environment. e.g. env name, app name, 

@@ -5,7 +5,7 @@ resource "aws_lb" "app_alb" {
   load_balancer_type = "application"
   #security_groups    = [aws_security_group.lb_sg.id]
   subnets                    = [for subnet in var.public_subnet_ids : subnet]
-  security_groups            = [aws_security_group.public_security_group.id]
+  security_groups            = [aws_security_group.public_security_group.id, aws_security_group.alb_security_group.id]
   enable_deletion_protection = false
   tags = {
     Name = "${var.app_name}-${var.env}-ALB"
