@@ -1,3 +1,4 @@
+# Provision Load Balancer for accessing the Application
 resource "aws_lb" "app_alb" {
   name               = "${var.app_name}-${var.env}-ALB"
   internal           = false
@@ -11,6 +12,7 @@ resource "aws_lb" "app_alb" {
   }
 }
 
+# Listener for the ALB
 resource "aws_lb_listener" "alb_listener" {
   load_balancer_arn = aws_lb.app_alb.arn
   port              = "80"
@@ -22,6 +24,7 @@ resource "aws_lb_listener" "alb_listener" {
   }
 }
 
+#Target group for the ALB
 resource "aws_lb_target_group" "app_target_group" {
   name        = "${var.app_name}-${var.env}-tg"
   port        = 80

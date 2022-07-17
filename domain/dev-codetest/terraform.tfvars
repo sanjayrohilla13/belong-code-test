@@ -5,7 +5,7 @@ env                 = "dev"
 app_name            = "BelongCodeTest"
 time_zone           = "Australia/Melbourne"
 #-----------------------------------------------------------------------------------------------------
-# VPC Variables
+# VPC Variables 
 #-----------------------------------------------------------------------------------------------------
 region              = "ap-southeast-2"
 az_list             = ["ap-southeast-2a", "ap-southeast-2b"] # Application will be deployed in 2 AZs 

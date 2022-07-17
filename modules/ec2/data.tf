@@ -1,3 +1,4 @@
+# Get the latest AMI for Amazon EC2 hvm AMI
 data "aws_ami" "instance_ami" {
   most_recent = true
 

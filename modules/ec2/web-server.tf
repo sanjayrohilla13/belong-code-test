@@ -1,4 +1,4 @@
-#Create Launch Configuration
+#Application Launch Configuration
 resource "aws_launch_configuration" "app_launch_conf" {
   name_prefix          = "${var.app_name}${var.env}-app_launch_configuration"
   image_id             = data.aws_ami.instance_ami.id
@@ -15,7 +15,7 @@ resource "aws_launch_configuration" "app_launch_conf" {
 
 }
 
-#Create Auto Scaling Group
+#Create Auto Scaling Group for the application
 resource "aws_autoscaling_group" "app_auto_scaling_grp" {
   name                 = "${var.app_name}-${var.env}-app_ASG"
   launch_configuration = aws_launch_configuration.app_launch_conf.name

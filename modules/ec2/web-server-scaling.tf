@@ -7,6 +7,7 @@ resource "aws_autoscaling_policy" "scale_out_policy" {
   autoscaling_group_name = aws_autoscaling_group.app_auto_scaling_grp.name
 }
 
+# CloudWatch alarm for high cpu usage
 resource "aws_cloudwatch_metric_alarm" "cw_high_cpu_metric_alarm" {
   alarm_name          = "${var.app_name}-${var.env}-high_cpu_metric_alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -23,10 +24,10 @@ resource "aws_cloudwatch_metric_alarm" "cw_high_cpu_metric_alarm" {
   }
 
   alarm_actions = [aws_autoscaling_policy.scale_out_policy.arn]
-  # SNS policy to be added later
   insufficient_data_actions = []
 }
 
+# Scale in policy for the Application ASG
 resource "aws_autoscaling_policy" "scale_in_policy" {
   name                   = "${var.app_name}-${var.env}-scale_in_policy"
   scaling_adjustment     = var.scale_in_adjustment
@@ -35,6 +36,7 @@ resource "aws_autoscaling_policy" "scale_in_policy" {
   autoscaling_group_name = aws_autoscaling_group.app_auto_scaling_grp.name
 }
 
+# CloudWatch alarm for low cpu usage
 resource "aws_cloudwatch_metric_alarm" "cw_low_cpu_metric_alarm" {
   alarm_name          = "${var.app_name}-${var.env}-low_cpu_metric_alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
