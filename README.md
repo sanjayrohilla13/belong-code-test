@@ -86,3 +86,6 @@ Please use the below steps to deploy the application in a new environment
    using load balancer url.
 
 Similarly, the application can be deployed in any number of environemnts.
+
+-------------------------------------------------------------------------------------------------------------------
+**Please refer to the the "Web Server Infrastructure Provisioning Details.docx" for design details. **
